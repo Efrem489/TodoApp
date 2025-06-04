@@ -7,8 +7,9 @@ using TodoApp.Domain.Entities;
 using TodoApp.Domain.Interfaces;
 using TodoApp.Application.DTOs;
 using MassTransit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 namespace TodoApp.Tests;
 
 [TestFixture]
@@ -41,9 +42,9 @@ public class TodoServiceTests
         var result = await _todoService.CreateTodoAsync(title);
 
         // Assert
-        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(result);
-        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(title, result.Title);
-        Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsFalse(result.IsCompleted);
+        ClassicAssert.IsNotNull(result);
+        ClassicAssert.AreEqual(title, result.Title);
+        ClassicAssert.IsFalse(result.IsCompleted);
         _todoRepositoryMock.Verify(r => r.AddAsync(It.IsAny<TodoItem>()), Times.Once());
         _publishEndpointMock.Verify(p => p.Publish(It.IsAny<object>(), default), Times.Once());
         _cacheServiceMock.Verify(c => c.SetAsync(It.IsAny<string>(), It.IsAny<TodoItem>(), It.IsAny<TimeSpan>()), Times.Once());
